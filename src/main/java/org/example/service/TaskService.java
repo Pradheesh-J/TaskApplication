@@ -1,6 +1,8 @@
 package org.example.service;
 
+import org.example.model.Priority;
 import org.example.model.Task;
+import org.example.util.ConsoleUI;
 
 
 import java.time.LocalDate;
@@ -34,12 +36,21 @@ public class TaskService {
         System.out.println();
         System.out.print("Enter Task Description: ");
         String taskDescription = taskInput.nextLine().trim();
+        System.out.println();
         System.out.print("Enter Due Date(dd MM yyyy): ");
         String dueDate = taskInput.nextLine().trim();
-
         LocalDate ld = LocalDate.parse(dueDate, df);
+        System.out.println();
+        System.out.print("Enter task priority(Press Enter to skip): ");
+        String taskPriority = taskInput.nextLine().trim().toUpperCase();
+        Priority priority;
+        if(taskPriority.isEmpty()){
+            priority = Priority.valueOf("MEDIUM");
+        }else {
+            priority = Priority.valueOf(taskPriority);
+        }
 
-        Task task = new Task(taskId, taskContent,taskDescription,ld);
+        Task task = new Task(taskId, taskContent,taskDescription,priority,ld);
         return task;
     }
 
@@ -57,11 +68,78 @@ public class TaskService {
             return;
         }
         for(Task task : allTasks){
-            System.out.print("Task ID: "+task.getTaskId());
-            System.out.print(" | Task Name: "+task.getTaskName());
-            System.out.print(" | Description: "+task.getTaskDescription());
-            System.out.print(" | Due Date: "+task.getDueDate().format(df));
-            System.out.println();
+           System.out.println(task);
         }
+    }
+    public void printAllPriorityTasks(){
+        if(allTasks.isEmpty()){
+            System.out.println("No tasks added yet");
+            return;
+        }
+        ConsoleUI.printLine();
+        System.out.println("--------------------High Priority----------------------");
+        printHighPriorityTasks();
+
+        System.out.println("--------------------Medium Priority---------------------");
+        printMediumPriorityTasks();
+
+        System.out.println("--------------------Low Priority----------------------");
+        printLowPriorityTasks();
+
+
+    }
+
+    public void printHighPriorityTasks(){
+        if(allTasks.isEmpty()){
+        System.out.println("No tasks added yet");
+        }
+        boolean printed = false;
+        for(Task task : allTasks){
+            if(task.getTaskPriority()==Priority.HIGH){
+                System.out.println(task);
+                printed = true;
+            }
+        }
+        if(!printed){
+            System.out.println("No high priority task available");
+        }
+
+
+    }
+
+    public void printMediumPriorityTasks(){
+        if(allTasks.isEmpty()){
+            System.out.println("No tasks added yet");
+        }
+        boolean printed = false;
+        for(Task task : allTasks){
+            if(task.getTaskPriority()==Priority.MEDIUM){
+                System.out.println(task);
+                printed = true;
+            }
+        }
+        if(!printed){
+            System.out.println("No medium priority task available");
+        }
+
+
+    }
+
+    public void printLowPriorityTasks(){
+        if(allTasks.isEmpty()){
+            System.out.println("No tasks added yet");
+        }
+        boolean printed = false;
+        for(Task task : allTasks){
+            if(task.getTaskPriority()==Priority.LOW){
+                System.out.println(task);
+                printed = true;
+            }
+        }
+        if(!printed){
+            System.out.println("No low priority task available");
+        }
+
+
     }
 }
