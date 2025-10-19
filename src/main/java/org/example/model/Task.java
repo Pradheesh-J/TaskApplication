@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,14 +16,22 @@ public class Task {
     private String taskDescription;
     private Priority taskPriority;
     private LocalDate dueDate;
+    private Set<String> categories;
 
+    @Override
     public String toString() {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String categoryList = categories != null && !categories.isEmpty()
+                ? String.join(", ", categories)
+                : "None";
+
         return "Task ID: " + taskId +
                 " | Task Name: " + taskName +
                 " | Description: " + taskDescription +
-                " | Priority: " + taskPriority.toString() +
+                " | Priority: " + taskPriority +
+                " | Categories: " + categoryList +
                 " | Due Date: " + (dueDate != null ? dueDate.format(df) : "N/A");
     }
+
 
 }
