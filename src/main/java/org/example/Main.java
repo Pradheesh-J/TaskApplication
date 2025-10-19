@@ -15,7 +15,7 @@ runningApp:        while(true) {
             try {
                 option = ConsoleUI.selectOption();
             }catch(NumberFormatException e){
-                System.out.println("Enter valid Number(1|2|3|4|5)");
+                System.out.println("Enter valid Number(1|2|3|4|5|6)");
                 continue;
             }catch(OutOfRangeException e){
                 System.out.println("Enter within the range");
@@ -44,6 +44,11 @@ runningApp:        while(true) {
                     ConsoleUI.printLine();
                     break;
                 case 5:
+                    taskService.convertToFile();
+                    System.out.println("Converted to file");
+                    ConsoleUI.printLine();
+                    break;
+                case 6:
                     System.out.println("Thanks for using the Task Management App");
                     break runningApp;
             }

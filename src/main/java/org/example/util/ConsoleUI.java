@@ -14,14 +14,15 @@ public class ConsoleUI {
         System.out.println("2. View current tasks");
         System.out.println("3. View tasks based on priority");
         System.out.println("4. View tasks based on category");
-        System.out.println("5. End Application");
+        System.out.println("5. Convert to notes");
+        System.out.println("6. End Application");
         printLine();
     }
     public static int selectOption()throws NumberFormatException,OutOfRangeException{
 
-        System.out.println("Select option(1|2|3|4|5): ");
+        System.out.println("Select option(1|2|3|4|5|6): ");
         int menuOption = Integer.parseInt(in.nextLine().trim());
-        if(menuOption<1 || menuOption>4) throw new OutOfRangeException("Out of Range Entered: "+menuOption);
+        if(menuOption<1 || menuOption>6) throw new OutOfRangeException("Out of Range Entered: "+menuOption);
         return menuOption;
     }
     public static void pauseEffect(){

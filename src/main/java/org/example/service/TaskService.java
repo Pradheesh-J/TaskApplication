@@ -1,10 +1,13 @@
 package org.example.service;
 
 import org.example.model.Priority;
+import org.example.model.SubTask;
 import org.example.model.Task;
 import org.example.util.ConsoleUI;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -55,13 +58,36 @@ public class TaskService {
         String[] categoriesSplit = categories.split(",");
         Set<String> categorySet = new HashSet<>(List.of(categoriesSplit));
         allCategories.addAll(categorySet);
+        System.out.println();
+        System.out.println("Do you have any subTasks(y/n): ");
+        char yOrN = taskInput.nextLine().charAt(0);
+        List<SubTask> subTasks = new ArrayList<>();
+        if(yOrN == 'y'){
+          subTasks =   inputSubTask();
 
-        Task task = new Task(taskId, taskContent, taskDescription, priority, ld, categorySet);
+        }
+
+        Task task = new Task(taskId, taskContent, taskDescription, priority, ld, categorySet,subTasks);
         return task;
     }
 
     public void addTask(Task task) {
         allTasks.add(task);
+    }
+
+    public List<SubTask> inputSubTask(){
+        List<SubTask> listOfSubTask = new ArrayList<>();
+        int i = 1;
+        while(true) {
+            System.out.print("Enter SubTask(press enter to close): ");
+            String input = taskInput.nextLine();
+            if (input.isEmpty()) break;
+            SubTask subTask = new SubTask(i,input);
+            listOfSubTask.add(subTask);
+            i++;
+
+        }
+        return listOfSubTask;
     }
 
     public boolean askToContinue() {
@@ -173,6 +199,30 @@ public class TaskService {
         if(!printed){
             System.out.println("No tasks under "+ category+" category");
         }
+    }
+
+    public void convertToFile(){
+        String filePath = "D:\\Cognizant\\output.txt";
+        String content = getAsString();
+        try(FileWriter fileWriter = new FileWriter(filePath)){
+            fileWriter.write(content);
+        }catch(IOException e){
+            System.out.println("File problem");
+        }
+
+    }
+
+    public String getAsString(){
+        if (allTasks.isEmpty()) {
+            System.out.println("No tasks added yet");
+            return "";
+        }
+        StringBuilder content = new StringBuilder();
+        for (Task task : allTasks) {
+            content.append(task.toString());
+            content.append(System.lineSeparator());
+        }
+        return content.toString();
     }
 
 
